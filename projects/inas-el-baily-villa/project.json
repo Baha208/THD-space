@@ -1,0 +1,368 @@
+{
+  "schemaVersion": 1,
+  "slug": "inas-el-baily-villa",
+  "client": "Inas El Baily",
+  "title": "Inas El Baily’s Villa",
+  "sourceDir": "3d views & working documents",
+  "floors": [
+    {
+      "id": "ground",
+      "label": "Ground Floor",
+      "tabLabel": "Ground",
+      "dir": "ground floor level",
+      "plan": "3d views & working documents/ground floor level/floor plan/Ground floor plan.webp",
+      "rooms": [
+        {
+          "id": "reception",
+          "label": "Reception",
+          "dir": "reception",
+          "images": [
+            "3d views & working documents/ground floor level/reception/reception1.webp",
+            "3d views & working documents/ground floor level/reception/reception2.webp",
+            "3d views & working documents/ground floor level/reception/reception3.webp",
+            "3d views & working documents/ground floor level/reception/reception4.webp",
+            "3d views & working documents/ground floor level/reception/reception5.webp",
+            "3d views & working documents/ground floor level/reception/reception6.webp",
+            "3d views & working documents/ground floor level/reception/reception7.webp",
+            "3d views & working documents/ground floor level/reception/reception8.webp",
+            "3d views & working documents/ground floor level/reception/reception9.webp",
+            "3d views & working documents/ground floor level/reception/reception10.webp",
+            "3d views & working documents/ground floor level/reception/reception11.webp",
+            "3d views & working documents/ground floor level/reception/reception12.webp",
+            "3d views & working documents/ground floor level/reception/reception13.webp",
+            "3d views & working documents/ground floor level/reception/reception14.webp",
+            "3d views & working documents/ground floor level/reception/reception15.webp",
+            "3d views & working documents/ground floor level/reception/reception16.webp",
+            "3d views & working documents/ground floor level/reception/reception17.webp"
+          ],
+          "medium": [
+            "3d views & working documents/ground floor level/reception/medium/reception1.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception2.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception3.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception4.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception5.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception6.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception7.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception8.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception9.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception10.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception11.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception12.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception13.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception14.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception15.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception16.webp",
+            "3d views & working documents/ground floor level/reception/medium/reception17.webp"
+          ]
+        },
+        {
+          "id": "kitchen",
+          "label": "Kitchen",
+          "dir": "kitchen",
+          "images": [
+            "3d views & working documents/ground floor level/kitchen/kitchen1.webp",
+            "3d views & working documents/ground floor level/kitchen/kitchen2.webp",
+            "3d views & working documents/ground floor level/kitchen/kitchen3.webp",
+            "3d views & working documents/ground floor level/kitchen/kitchen4.webp",
+            "3d views & working documents/ground floor level/kitchen/kitchen5.webp",
+            "3d views & working documents/ground floor level/kitchen/kitchen6.webp",
+            "3d views & working documents/ground floor level/kitchen/kitchen7.webp"
+          ],
+          "medium": [
+            "3d views & working documents/ground floor level/kitchen/medium/kitchen1.webp",
+            "3d views & working documents/ground floor level/kitchen/medium/kitchen2.webp",
+            "3d views & working documents/ground floor level/kitchen/medium/kitchen3.webp",
+            "3d views & working documents/ground floor level/kitchen/medium/kitchen4.webp",
+            "3d views & working documents/ground floor level/kitchen/medium/kitchen5.webp",
+            "3d views & working documents/ground floor level/kitchen/medium/kitchen6.webp",
+            "3d views & working documents/ground floor level/kitchen/medium/kitchen7.webp"
+          ]
+        },
+        {
+          "id": "guestToilet",
+          "label": "Guest Toilet",
+          "dir": "guest toilet",
+          "images": [
+            "3d views & working documents/ground floor level/guest toilet/guest toilet1.webp",
+            "3d views & working documents/ground floor level/guest toilet/guest toilet2.webp",
+            "3d views & working documents/ground floor level/guest toilet/guest toilet3.webp",
+            "3d views & working documents/ground floor level/guest toilet/guest toilet4.webp"
+          ],
+          "medium": [
+            "3d views & working documents/ground floor level/guest toilet/medium/guest toilet1.webp",
+            "3d views & working documents/ground floor level/guest toilet/medium/guest toilet2.webp",
+            "3d views & working documents/ground floor level/guest toilet/medium/guest toilet3.webp",
+            "3d views & working documents/ground floor level/guest toilet/medium/guest toilet4.webp"
+          ]
+        },
+        {
+          "id": "landscape",
+          "label": "Landscape",
+          "dir": "landscape",
+          "images": [
+            "3d views & working documents/ground floor level/landscape/landscape1.webp",
+            "3d views & working documents/ground floor level/landscape/landscape2.webp",
+            "3d views & working documents/ground floor level/landscape/landscape3.webp",
+            "3d views & working documents/ground floor level/landscape/landscape4.webp",
+            "3d views & working documents/ground floor level/landscape/landscape5.webp",
+            "3d views & working documents/ground floor level/landscape/landscape6.webp",
+            "3d views & working documents/ground floor level/landscape/landscape7.webp",
+            "3d views & working documents/ground floor level/landscape/landscape8.webp",
+            "3d views & working documents/ground floor level/landscape/landscape9.webp",
+            "3d views & working documents/ground floor level/landscape/landscape10.webp",
+            "3d views & working documents/ground floor level/landscape/landscape11.webp",
+            "3d views & working documents/ground floor level/landscape/landscape12.webp"
+          ],
+          "medium": [
+            "3d views & working documents/ground floor level/landscape/medium/landscape1.webp",
+            "3d views & working documents/ground floor level/landscape/medium/landscape2.webp",
+            "3d views & working documents/ground floor level/landscape/medium/landscape3.webp",
+            "3d views & working documents/ground floor level/landscape/medium/landscape4.webp",
+            "3d views & working documents/ground floor level/landscape/medium/landscape5.webp",
+            "3d views & working documents/ground floor level/landscape/medium/landscape6.webp",
+            "3d views & working documents/ground floor level/landscape/medium/landscape7.webp",
+            "3d views & working documents/ground floor level/landscape/medium/landscape8.webp",
+            "3d views & working documents/ground floor level/landscape/medium/landscape9.webp",
+            "3d views & working documents/ground floor level/landscape/medium/landscape10.webp",
+            "3d views & working documents/ground floor level/landscape/medium/landscape11.webp",
+            "3d views & working documents/ground floor level/landscape/medium/landscape12.webp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "first",
+      "label": "First Floor",
+      "tabLabel": "First",
+      "dir": "First floor level",
+      "plan": "3d views & working documents/First floor level/floor plan/first floor plan.webp",
+      "rooms": [
+        {
+          "id": "firstFloorLobby",
+          "label": "First Floor Lobby",
+          "dir": "First floor lobby",
+          "images": [
+            "3d views & working documents/First floor level/First floor lobby/First floor lobby1.webp",
+            "3d views & working documents/First floor level/First floor lobby/First floor lobby2.webp",
+            "3d views & working documents/First floor level/First floor lobby/First floor lobby3.webp",
+            "3d views & working documents/First floor level/First floor lobby/First floor lobby4.webp",
+            "3d views & working documents/First floor level/First floor lobby/First floor lobby5.webp"
+          ],
+          "medium": [
+            "3d views & working documents/First floor level/First floor lobby/medium/First floor lobby1.webp",
+            "3d views & working documents/First floor level/First floor lobby/medium/First floor lobby2.webp",
+            "3d views & working documents/First floor level/First floor lobby/medium/First floor lobby3.webp",
+            "3d views & working documents/First floor level/First floor lobby/medium/First floor lobby4.webp",
+            "3d views & working documents/First floor level/First floor lobby/medium/First floor lobby5.webp"
+          ]
+        },
+        {
+          "id": "masterBedroom",
+          "label": "Master Bedroom",
+          "dir": "master bedroom",
+          "images": [
+            "3d views & working documents/First floor level/master bedroom/master bedroom1.webp",
+            "3d views & working documents/First floor level/master bedroom/master bedroom2.webp",
+            "3d views & working documents/First floor level/master bedroom/master bedroom3.webp",
+            "3d views & working documents/First floor level/master bedroom/master bedroom4.webp",
+            "3d views & working documents/First floor level/master bedroom/master bedroom5.webp",
+            "3d views & working documents/First floor level/master bedroom/master bedroom6.webp",
+            "3d views & working documents/First floor level/master bedroom/master bedroom7.webp",
+            "3d views & working documents/First floor level/master bedroom/master bedroom8.webp"
+          ],
+          "medium": [
+            "3d views & working documents/First floor level/master bedroom/medium/master bedroom1.webp",
+            "3d views & working documents/First floor level/master bedroom/medium/master bedroom2.webp",
+            "3d views & working documents/First floor level/master bedroom/medium/master bedroom3.webp",
+            "3d views & working documents/First floor level/master bedroom/medium/master bedroom4.webp",
+            "3d views & working documents/First floor level/master bedroom/medium/master bedroom5.webp",
+            "3d views & working documents/First floor level/master bedroom/medium/master bedroom6.webp",
+            "3d views & working documents/First floor level/master bedroom/medium/master bedroom7.webp",
+            "3d views & working documents/First floor level/master bedroom/medium/master bedroom8.webp"
+          ]
+        },
+        {
+          "id": "masterBathroom",
+          "label": "Master Bathroom",
+          "dir": "master bathroom",
+          "images": [
+            "3d views & working documents/First floor level/master bathroom/master bathroom1.webp",
+            "3d views & working documents/First floor level/master bathroom/master bathroom2.webp",
+            "3d views & working documents/First floor level/master bathroom/master bathroom3.webp",
+            "3d views & working documents/First floor level/master bathroom/master bathroom4.webp",
+            "3d views & working documents/First floor level/master bathroom/master bathroom5.webp",
+            "3d views & working documents/First floor level/master bathroom/master bathroom6.webp",
+            "3d views & working documents/First floor level/master bathroom/master bathroom7.webp"
+          ],
+          "medium": [
+            "3d views & working documents/First floor level/master bathroom/medium/master bathroom1.webp",
+            "3d views & working documents/First floor level/master bathroom/medium/master bathroom2.webp",
+            "3d views & working documents/First floor level/master bathroom/medium/master bathroom3.webp",
+            "3d views & working documents/First floor level/master bathroom/medium/master bathroom4.webp",
+            "3d views & working documents/First floor level/master bathroom/medium/master bathroom5.webp",
+            "3d views & working documents/First floor level/master bathroom/medium/master bathroom6.webp",
+            "3d views & working documents/First floor level/master bathroom/medium/master bathroom7.webp"
+          ]
+        },
+        {
+          "id": "guestBedroom",
+          "label": "Guest Bedroom",
+          "dir": "guest bedroom",
+          "images": [
+            "3d views & working documents/First floor level/guest bedroom/guest bedroom1.webp",
+            "3d views & working documents/First floor level/guest bedroom/guest bedroom2.webp",
+            "3d views & working documents/First floor level/guest bedroom/guest bedroom3.webp",
+            "3d views & working documents/First floor level/guest bedroom/guest bedroom4.webp",
+            "3d views & working documents/First floor level/guest bedroom/guest bedroom5.webp",
+            "3d views & working documents/First floor level/guest bedroom/guest bedroom6.webp"
+          ],
+          "medium": [
+            "3d views & working documents/First floor level/guest bedroom/medium/guest bedroom1.webp",
+            "3d views & working documents/First floor level/guest bedroom/medium/guest bedroom2.webp",
+            "3d views & working documents/First floor level/guest bedroom/medium/guest bedroom3.webp",
+            "3d views & working documents/First floor level/guest bedroom/medium/guest bedroom4.webp",
+            "3d views & working documents/First floor level/guest bedroom/medium/guest bedroom5.webp",
+            "3d views & working documents/First floor level/guest bedroom/medium/guest bedroom6.webp"
+          ]
+        },
+        {
+          "id": "familyBathroom",
+          "label": "Family Bathroom",
+          "dir": "Family bathroom",
+          "images": [
+            "3d views & working documents/First floor level/Family bathroom/Family bathroom1.webp",
+            "3d views & working documents/First floor level/Family bathroom/Family bathroom2.webp",
+            "3d views & working documents/First floor level/Family bathroom/Family bathroom3.webp",
+            "3d views & working documents/First floor level/Family bathroom/Family bathroom4.webp",
+            "3d views & working documents/First floor level/Family bathroom/Family bathroom5.webp",
+            "3d views & working documents/First floor level/Family bathroom/Family bathroom6.webp"
+          ],
+          "medium": [
+            "3d views & working documents/First floor level/Family bathroom/medium/Family bathroom1.webp",
+            "3d views & working documents/First floor level/Family bathroom/medium/Family bathroom2.webp",
+            "3d views & working documents/First floor level/Family bathroom/medium/Family bathroom3.webp",
+            "3d views & working documents/First floor level/Family bathroom/medium/Family bathroom4.webp",
+            "3d views & working documents/First floor level/Family bathroom/medium/Family bathroom5.webp",
+            "3d views & working documents/First floor level/Family bathroom/medium/Family bathroom6.webp"
+          ]
+        },
+        {
+          "id": "homeOffice",
+          "label": "Home Office",
+          "dir": "home office",
+          "images": [
+            "3d views & working documents/First floor level/home office/home office1.webp",
+            "3d views & working documents/First floor level/home office/home office2.webp",
+            "3d views & working documents/First floor level/home office/home office3.webp",
+            "3d views & working documents/First floor level/home office/home office4.webp",
+            "3d views & working documents/First floor level/home office/home office5.webp",
+            "3d views & working documents/First floor level/home office/home office6.webp",
+            "3d views & working documents/First floor level/home office/home office7.webp",
+            "3d views & working documents/First floor level/home office/home office8.webp"
+          ],
+          "medium": [
+            "3d views & working documents/First floor level/home office/medium/home office1.webp",
+            "3d views & working documents/First floor level/home office/medium/home office2.webp",
+            "3d views & working documents/First floor level/home office/medium/home office3.webp",
+            "3d views & working documents/First floor level/home office/medium/home office4.webp",
+            "3d views & working documents/First floor level/home office/medium/home office5.webp",
+            "3d views & working documents/First floor level/home office/medium/home office6.webp",
+            "3d views & working documents/First floor level/home office/medium/home office7.webp",
+            "3d views & working documents/First floor level/home office/medium/home office8.webp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "roof",
+      "label": "Roof Floor",
+      "tabLabel": "Roof",
+      "dir": "Roof floor level",
+      "plan": "3d views & working documents/Roof floor level/floor plan/Roof floor plan.webp",
+      "rooms": [
+        {
+          "id": "roofsLobby",
+          "label": "Roofs Lobby",
+          "dir": "roofs lobby",
+          "images": [
+            "3d views & working documents/Roof floor level/roofs lobby/roofs lobby1.webp",
+            "3d views & working documents/Roof floor level/roofs lobby/roofs lobby2.webp",
+            "3d views & working documents/Roof floor level/roofs lobby/roofs lobby3.webp",
+            "3d views & working documents/Roof floor level/roofs lobby/roofs lobby4.webp"
+          ],
+          "medium": [
+            "3d views & working documents/Roof floor level/roofs lobby/medium/roofs lobby1.webp",
+            "3d views & working documents/Roof floor level/roofs lobby/medium/roofs lobby2.webp",
+            "3d views & working documents/Roof floor level/roofs lobby/medium/roofs lobby3.webp",
+            null
+          ]
+        },
+        {
+          "id": "roofsSuite",
+          "label": "Roofs Suite",
+          "dir": "roofs suite",
+          "images": [
+            "3d views & working documents/Roof floor level/roofs suite/roofs suite1.webp",
+            "3d views & working documents/Roof floor level/roofs suite/roofs suite2.webp",
+            "3d views & working documents/Roof floor level/roofs suite/roofs suite3.webp",
+            "3d views & working documents/Roof floor level/roofs suite/roofs suite4.webp",
+            "3d views & working documents/Roof floor level/roofs suite/roofs suite5.webp",
+            "3d views & working documents/Roof floor level/roofs suite/roofs suite6.webp",
+            "3d views & working documents/Roof floor level/roofs suite/roofs suite7.webp"
+          ],
+          "medium": [
+            "3d views & working documents/Roof floor level/roofs suite/medium/roofs suite1.webp",
+            "3d views & working documents/Roof floor level/roofs suite/medium/roofs suite2.webp",
+            "3d views & working documents/Roof floor level/roofs suite/medium/roofs suite3.webp",
+            "3d views & working documents/Roof floor level/roofs suite/medium/roofs suite4.webp",
+            "3d views & working documents/Roof floor level/roofs suite/medium/roofs suite5.webp",
+            "3d views & working documents/Roof floor level/roofs suite/medium/roofs suite6.webp",
+            "3d views & working documents/Roof floor level/roofs suite/medium/roofs suite7.webp"
+          ]
+        },
+        {
+          "id": "roofsBathroom",
+          "label": "Roofs Bathroom",
+          "dir": "roofs bathroom",
+          "images": [
+            "3d views & working documents/Roof floor level/roofs bathroom/roofs bathroom1.webp",
+            "3d views & working documents/Roof floor level/roofs bathroom/roofs bathroom2.webp",
+            "3d views & working documents/Roof floor level/roofs bathroom/roofs bathroom3.webp"
+          ],
+          "medium": [
+            "3d views & working documents/Roof floor level/roofs bathroom/medium/roofs bathroom1.webp",
+            "3d views & working documents/Roof floor level/roofs bathroom/medium/roofs bathroom2.webp",
+            "3d views & working documents/Roof floor level/roofs bathroom/medium/roofs bathroom3.webp"
+          ]
+        },
+        {
+          "id": "roofsOutdoor",
+          "label": "Roofs Outdoor",
+          "dir": "roofs outdoor",
+          "images": [
+            "3d views & working documents/Roof floor level/roofs outdoor/roofs outdoor1.webp",
+            "3d views & working documents/Roof floor level/roofs outdoor/roofs outdoor2.webp",
+            "3d views & working documents/Roof floor level/roofs outdoor/roofs outdoor3.webp",
+            "3d views & working documents/Roof floor level/roofs outdoor/roofs outdoor4.webp",
+            "3d views & working documents/Roof floor level/roofs outdoor/roofs outdoor5.webp",
+            "3d views & working documents/Roof floor level/roofs outdoor/roofs outdoor6.webp",
+            "3d views & working documents/Roof floor level/roofs outdoor/roofs outdoor7.webp"
+          ],
+          "medium": [
+            "3d views & working documents/Roof floor level/roofs outdoor/medium/roofs outdoor1.webp",
+            "3d views & working documents/Roof floor level/roofs outdoor/medium/roofs outdoor2.webp",
+            "3d views & working documents/Roof floor level/roofs outdoor/medium/roofs outdoor3.webp",
+            "3d views & working documents/Roof floor level/roofs outdoor/medium/roofs outdoor4.webp",
+            "3d views & working documents/Roof floor level/roofs outdoor/medium/roofs outdoor5.webp",
+            "3d views & working documents/Roof floor level/roofs outdoor/medium/roofs outdoor6.webp",
+            "3d views & working documents/Roof floor level/roofs outdoor/medium/roofs outdoor7.webp"
+          ]
+        }
+      ]
+    }
+  ],
+  "documents": {
+    "dir": "Working documents",
+    "files": []
+  }
+}

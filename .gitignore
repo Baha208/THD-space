@@ -1,0 +1,17 @@
+# Source brand files (.ai, logos, palette, typefaces): not used by the app, kept out of the repo.
+THD studio brand identity/
+
+# Node packages for tools/ (reinstall with: npm install --prefix tools)
+node_modules/
+
+# OS junk
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+.DS_Store
+._*
+.Spotlight-V100/
+.Trashes/

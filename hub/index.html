@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Page zoom fully locked (same as the presentations); hub.js also blocks iOS's pinch gesture,
+     which ignores user-scalable=no. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<!-- THD Space: the team hub. Separate installable app (scope hub/); nothing in engine/ or
+     projects/ links back here. Tab content is built by hub.js. -->
+<title>THD Space</title>
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="THD Space">
+<!-- Installed on iOS, the ink header runs up under the status bar (it pads for the safe area). -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="icons/icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="preload" href="../engine/fonts/BankGothic-Medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../engine/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<link rel="preload" href="splash-mark.png" as="image">
+<!-- Opening animation on a cold start only: decided here, before the first paint, so a reload or
+     a return within the same session never flashes it (see "Opening animation" in CLAUDE.md). -->
+<script>try{if(!sessionStorage.getItem("thd-hub-intro"))document.documentElement.classList.add("intro-playing")}catch(e){}</script>
+<script src="hub.js" defer></script>
+</head>
+<body>
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-rings"><span></span><span></span><span></span></div>
+  <img class="intro-mark" src="splash-mark.png" alt="" width="468" height="88" draggable="false">
+  <p class="intro-word">Space</p>
+</div>
+
+<header class="hub-header">
+  <p class="hub-kicker">THD Space</p>
+  <h1 class="hub-title" id="hub-title">Projects</h1>
+</header>
+
+<main class="hub-main">
+  <section class="hub-panel" id="panel-projects" role="tabpanel" aria-labelledby="tab-projects">
+    <p class="hub-status" id="projects-status">Loading</p>
+    <nav class="project-list" id="project-list" aria-label="Projects" hidden></nav>
+  </section>
+  <section class="hub-panel" id="panel-reports" role="tabpanel" aria-labelledby="tab-reports" hidden>
+    <!-- Placeholder pending direction: no data file or schema yet. -->
+    <p class="hub-empty">Reports — coming soon</p>
+  </section>
+  <section class="hub-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news" hidden>
+    <!-- Placeholder pending direction: no data file or schema yet. -->
+    <p class="hub-empty">News — coming soon</p>
+  </section>
+</main>
+
+<nav class="tabbar" role="tablist" aria-label="THD Space sections">
+  <button class="tabbar-tab" id="tab-projects" role="tab" aria-controls="panel-projects" aria-selected="true" data-tab="projects">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7"/><rect x="13.5" y="3.5" width="7" height="7"/><rect x="3.5" y="13.5" width="7" height="7"/><rect x="13.5" y="13.5" width="7" height="7"/></svg>
+    <span class="tabbar-label">Projects</span>
+  </button>
+  <button class="tabbar-tab" id="tab-reports" role="tab" aria-controls="panel-reports" aria-selected="false" data-tab="reports">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h8.5L19 8v12.5H6z"/><path d="M14.5 3.5V8H19"/><path d="M9.5 17v-3M12.5 17v-5M15.5 17v-2"/></svg>
+    <span class="tabbar-label">Reports</span>
+  </button>
+  <button class="tabbar-tab" id="tab-news" role="tab" aria-controls="panel-news" aria-selected="false" data-tab="news">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h13v13a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2z"/><path d="M17 9h3v9.5a2 2 0 0 1-2 2"/><path d="M7 9h7M7 12.5h7M7 16h4"/></svg>
+    <span class="tabbar-label">News</span>
+  </button>
+</nav>
+<noscript>THD Space needs JavaScript enabled.</noscript>
+</body>
+</html>

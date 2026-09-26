@@ -1,0 +1,365 @@
+/* ===== THD Space — team hub =====
+   Colours and fonts come from engine/tokens.css, shared with the client presentations,
+   including the zone tokens (--chrome-*, --content-bg, --card-*); this file only uses them.
+   Text-forward, no logo in the chrome: the install icon (and the cold-start intro) is the branding.
+
+   Zones: ink header + ink bottom tab bar framing a mist content area; content items (project
+   rows, and any future cards in Reports/News) are white cards with a faint ink border. */
+@import url("../engine/tokens.css");
+
+/* Safe areas: the live env() inset, or the largest one hub.js has measured this session for the
+   current orientation, whichever is bigger. On iOS, after an installed hub returns from a
+   project opened in the in-app Safari sheet (Done), WebKit can report the insets as 0 until the
+   next viewport change, which put the header under the status bar; the remembered value keeps
+   the padding right without having to catch that moment (see "Safe areas" in CLAUDE.md). */
+:root {
+  --sa-top: max(env(safe-area-inset-top, 0px), var(--sa-top-known, 0px));
+  --sa-bottom: max(env(safe-area-inset-bottom, 0px), var(--sa-bottom-known, 0px));
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Ink behind everything: iOS overscroll and the status-bar area match the header and tab bar. */
+html {
+  background: var(--chrome-bg);
+  /* Page zoom is locked (viewport meta + hub.js); this also stops double-tap zoom. */
+  touch-action: pan-x pan-y;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--chrome-bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+/* ===================== HEADER (ink) ===================== */
+
+.hub-header {
+  flex: none;
+  padding: calc(28px + var(--sa-top)) 24px 20px;
+  text-align: center;
+  background: var(--chrome-bg);
+}
+
+.hub-kicker {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 9px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--chrome-text-muted);
+}
+
+.hub-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--chrome-text);
+}
+
+/* ===================== CONTENT (mist) ===================== */
+
+/* Fills the space between header and tab bar; room at the bottom for the fixed tab bar
+   (and the home indicator). */
+.hub-main {
+  flex: 1;
+  background: var(--content-bg);
+  padding: 16px 16px calc(96px + var(--sa-bottom));
+}
+
+.hub-panel {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.hub-status,
+.hub-empty {
+  margin: 0;
+  padding: 48px 0;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.hub-status.is-error {
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 1.5;
+  color: var(--error);
+  overflow-wrap: anywhere;
+}
+
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* A card: white on mist with a faint ink outline. Reuse for future Reports/News items. */
+.project-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--ink);
+  text-decoration: none;
+  transition: background 0.2s var(--ease);
+}
+
+.project-row:hover,
+.project-row:active {
+  background: var(--card-hover);
+}
+
+.project-index {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--gray);
+}
+
+.project-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.project-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-client {
+  font-size: 12px;
+  color: var(--gray);
+}
+
+.project-chevron {
+  flex: none;
+  color: var(--gray);
+}
+
+/* ===================== BOTTOM TAB BAR (ink) ===================== */
+
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  padding-bottom: var(--sa-bottom);
+  background: var(--chrome-bg);
+}
+
+.tabbar-tab {
+  position: relative;
+  flex: 1;
+  max-width: 240px; /* on wide screens the tabs stay grouped under the 720px content */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 4px 14px;
+  color: var(--chrome-text-muted);
+  transition: color 0.25s var(--ease);
+}
+
+.tabbar-tab svg {
+  display: block;
+}
+
+.tabbar-label {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.tabbar-tab[aria-selected="true"] {
+  color: var(--chrome-text);
+}
+
+/* Same accent bar as the floor tabs in a presentation, on the bar's top edge. */
+.tabbar-tab[aria-selected="true"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: var(--accent);
+}
+
+@media (min-width: 640px) {
+  .hub-header {
+    padding-top: calc(36px + var(--sa-top));
+  }
+
+  .hub-main {
+    padding-top: 24px;
+  }
+}
+
+/* ===================== OPENING ANIMATION (cold start only) ===================== */
+/* Shown only while <html> has .intro-playing (set before first paint by the inline script in
+   index.html when this session hasn't seen it yet); hub.js ends it when the sequence is over —
+   it always plays to completion, taps do nothing. Flat colours only: accent strokes/mark on
+   ink, no blur or gradients. Timeline (1.8s):
+   rings pulse outward 0–1.3s (staggered), mark fades/scales in 0–0.55s, "SPACE" 0.7–1.1s,
+   then the whole layer fades out from 1.5s. */
+
+.intro {
+  display: none;
+}
+
+html.intro-playing .intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: var(--ink);
+  -webkit-user-select: none;
+  user-select: none;
+  transition: opacity 0.3s var(--ease);
+}
+
+html.intro-playing .intro.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Nothing behind the intro scrolls or shows through while it plays. */
+html.intro-playing body {
+  overflow: hidden;
+}
+
+.intro-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+.intro-rings span {
+  position: absolute;
+  left: -110px;
+  top: -110px;
+  width: 220px;
+  height: 220px;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.45);
+  animation: intro-ring 1.1s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+.intro-rings span:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+.intro-rings span:nth-child(3) {
+  animation-delay: 0.32s;
+}
+
+@keyframes intro-ring {
+  0%   { opacity: 0;    transform: scale(0.45); }
+  25%  { opacity: 0.85; }
+  100% { opacity: 0;    transform: scale(1.9); }
+}
+
+.intro-mark {
+  position: relative;
+  width: 140px;
+  height: auto;
+  opacity: 0;
+  transform: scale(0.86);
+  animation: intro-mark 0.55s var(--ease) forwards;
+}
+
+@keyframes intro-mark {
+  to { opacity: 1; transform: scale(1); }
+}
+
+.intro-word {
+  position: relative;
+  margin: 0;
+  padding-left: 0.62em; /* balances the trailing letter-spacing, so the word sits centred */
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.62em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0;
+  animation: intro-word 0.4s var(--ease) 0.7s forwards;
+}
+
+@keyframes intro-word {
+  to { opacity: 1; }
+}
+
+/* Reduced motion: no pulsing or scaling; the mark and word simply show, briefly. */
+@media (prefers-reduced-motion: reduce) {
+  .intro-rings {
+    display: none;
+  }
+
+  .intro-mark,
+  .intro-word {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  html.intro-playing .intro {
+    transition: none;
+  }
+}

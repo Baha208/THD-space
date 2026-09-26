@@ -1,0 +1,767 @@
+/* ===== THD Studio — presentation engine =====
+   Shared by every project. Nothing project-specific belongs here.
+   Colours and fonts come from tokens.css (the single source of truth; see CLAUDE.md for
+   everything that imports it). This file only uses them. */
+@import url("tokens.css");
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===================== SAFE AREAS =====================
+   Installed on iOS the status bar is black-translucent (index.html) and the viewport covers the
+   whole screen (viewport-fit=cover), so the page runs under the status bar, the home indicator
+   and, in landscape, the side notch. Everything that could end up there is padded by these
+   insets; each is 0 where there is no notch, so nothing moves on other screens. */
+:root {
+  --sa-top: env(safe-area-inset-top, 0px);
+  --sa-right: env(safe-area-inset-right, 0px);
+  --sa-bottom: env(safe-area-inset-bottom, 0px);
+  --sa-left: env(safe-area-inset-left, 0px);
+}
+
+/* Ink behind the status bar, so page content scrolling up under the clock stays hidden (the
+   sticky floor tabs stop just below it). Under the loader and the overlays, above the page. */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 25;
+  height: var(--sa-top);
+  background: var(--chrome-bg);
+  pointer-events: none;
+}
+
+/* ===================== LOADER ===================== */
+
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  transition: opacity 0.6s var(--ease), visibility 0.6s var(--ease);
+}
+
+#loader.loader-exit {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 0 8vw;
+}
+
+.loader-kicker {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 9px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.loader-title {
+  margin: 0 0 32px;
+  min-height: 1.2em;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(16px, 5vw, 24px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.loader-bar-track {
+  width: min(56vw, 220px);
+  height: 2px;
+  background: var(--mist);
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: var(--ink);
+  transition: width 0.25s var(--ease);
+}
+
+.loader-percent {
+  margin: 10px 0 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--gray);
+  min-width: 3em;
+  text-align: center;
+}
+
+.loader-failed .loader-bar-fill {
+  background: var(--error);
+}
+
+.loader-failed .loader-percent {
+  color: var(--error);
+}
+
+.loader-error {
+  margin-top: 20px;
+  width: min(84vw, 560px);
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.loader-error-title {
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.loader-error-list {
+  margin: 0;
+  padding: 12px 12px 12px 28px;
+  max-height: 40vh;
+  overflow-y: auto;
+  border: 1px solid var(--mist);
+  overflow-wrap: anywhere;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===================== APP SHELL ===================== */
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease);
+}
+
+#app.app-visible {
+  opacity: 1;
+}
+
+/* Zones (tokens.css): ink chrome = header + floor tabs; mist content area; white cards.
+   Text only: the THD mark is seen on the home-screen icon, not repeated inside the app. */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(28px + var(--sa-top)) max(24px, var(--sa-right)) 20px max(24px, var(--sa-left));
+  background: var(--chrome-bg);
+  border-bottom: 1px solid var(--chrome-divider);
+}
+
+.site-project {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--chrome-text);
+  text-align: center;
+}
+
+/* ===================== TABS ===================== */
+
+/* Sticks just below the status bar (the body::before backdrop covers the bar itself), so there
+   is no empty band above the labels while the tabs sit under the header. */
+.tabs {
+  position: sticky;
+  top: var(--sa-top);
+  z-index: 20;
+  display: flex;
+  width: 100%;
+  padding: 0 var(--sa-right) 0 var(--sa-left);
+  background: var(--chrome-bg);
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 8px 16px;
+  position: relative;
+  color: var(--chrome-text-muted);
+  transition: color 0.3s var(--ease);
+}
+
+.tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.35s var(--ease);
+}
+
+.tab[aria-selected="true"] {
+  color: var(--chrome-text);
+}
+
+.tab[aria-selected="true"]::after {
+  transform: scaleX(1);
+}
+
+.tab-index {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: inherit;
+  opacity: 0.55;
+}
+
+.tab[aria-selected="true"] .tab-index {
+  opacity: 1;
+}
+
+.tab-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ===================== PANELS ===================== */
+
+.panels {
+  flex: 1;
+  position: relative;
+  background: var(--content-bg);
+}
+
+.panel {
+  min-height: 60vh;
+  animation: fadeUp 0.5s var(--ease) forwards;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+/* ===================== FLOOR PLAN + SPACES ===================== */
+
+.floor-content {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 32px max(24px, var(--sa-right)) 56px max(24px, var(--sa-left));
+}
+
+/* The plan sits on the content area as a card, like the rows. */
+.floorplan {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+}
+
+.floorplan-image {
+  width: 100%;
+  height: auto;
+}
+
+.floorplan-error {
+  margin: 0;
+  padding: 24px 16px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--error);
+  overflow-wrap: anywhere;
+}
+
+/* Room (and drawing) rows: white cards on the content area, as the hub's project rows. */
+.space-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.space-button {
+  width: 100%;
+  padding: 18px 4px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+.space-button:hover,
+.space-button:focus-visible {
+  background: var(--card-hover);
+}
+
+/* ===================== DRAWINGS ===================== */
+
+.drawing-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.drawing-link[aria-busy="true"] {
+  color: var(--gray);
+}
+
+.drawing-kind {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  padding: 2px 5px;
+  border: 1px solid currentColor;
+  color: var(--gray);
+}
+
+.drawing-error {
+  margin: 0;
+  padding: 10px 4px 14px;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--error);
+  overflow-wrap: anywhere;
+}
+
+/* In-app PDF viewer: same dark overlay, close button and caption as the gallery. */
+.doc-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  background: var(--ink);
+}
+
+.doc-viewer-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  padding: calc(68px + var(--sa-top)) var(--sa-right) calc(56px + var(--sa-bottom)) var(--sa-left);
+}
+
+/* Scroll container for the page stack (pdf-view.js). At 1x it scrolls natively; zoomed
+   in, zoom.js pans the stack itself, so native scrolling and gestures are switched off. */
+.doc-viewer-pages {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+.doc-viewer-pages.is-zoomed {
+  overflow: hidden;
+  touch-action: none;
+}
+
+.pdf-pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  transform-origin: center center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.pdf-pages.is-zoomed {
+  cursor: grab;
+}
+
+.doc-viewer-pages.is-panning .pdf-pages {
+  cursor: grabbing;
+}
+
+.pdf-pages.zoom-animate {
+  transition: transform 0.25s var(--ease);
+}
+
+/* Correctly sized before it is drawn, so the scroll length never jumps. */
+.pdf-page {
+  position: relative;
+  flex: none;
+  background: var(--mist);
+}
+
+.pdf-page.is-rendered {
+  background: var(--white);
+}
+
+.pdf-page canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pdf-page.is-failed::after {
+  content: attr(data-error);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--error);
+}
+
+.drawings-empty {
+  margin: 0;
+  padding: 48px 0;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+/* ===================== GALLERY ===================== */
+
+.gallery {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  overflow: hidden;
+  background: var(--ink);
+  touch-action: pan-y;
+}
+
+.gallery.is-open {
+  display: flex;
+}
+
+.gallery-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(72px + var(--sa-top)) max(20px, var(--sa-right)) calc(108px + var(--sa-bottom)) max(20px, var(--sa-left));
+  box-sizing: border-box;
+}
+
+.gallery-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  transform-origin: center center;
+  cursor: zoom-in;
+}
+
+/* Zoomed in: gallery.js owns every touch gesture on the image, so the browser's
+   own panning/zooming must not compete. */
+.gallery-image.is-zoomed,
+.gallery-stage.is-zoomed {
+  touch-action: none;
+}
+
+.gallery-image.is-zoomed {
+  cursor: grab;
+  will-change: transform;
+}
+
+.gallery-stage.is-panning .gallery-image {
+  cursor: grabbing;
+}
+
+.gallery-image.zoom-animate {
+  transition: transform 0.25s var(--ease);
+}
+
+/* A zoomed render fills the screen, often with light walls; keep the controls and
+   caption readable over it. */
+.gallery.is-zoomed .gallery-close,
+.gallery.is-zoomed .gallery-nav {
+  background: var(--scrim);
+  border-radius: 50%;
+}
+
+.gallery.is-zoomed .gallery-nav:hover {
+  background: var(--accent);
+}
+
+.gallery.is-zoomed .gallery-title,
+.gallery.is-zoomed .gallery-count {
+  background: var(--scrim);
+  padding: 2px 8px;
+}
+
+.gallery-status {
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  right: 24px;
+  transform: translateY(-50%);
+  margin: 0;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mist);
+  pointer-events: none;
+}
+
+.gallery-status.is-error {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+
+.gallery-close {
+  position: absolute;
+  top: calc(16px + var(--sa-top));
+  right: max(16px, var(--sa-right));
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 28px;
+  line-height: 1;
+  z-index: 2;
+}
+
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  background: var(--on-ink-subtle);
+  color: var(--white);
+  align-items: center;
+  justify-content: center;
+  display: none;
+  z-index: 2;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+.gallery-nav svg {
+  display: block;
+}
+
+.gallery-nav:hover {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+.gallery-prev {
+  left: max(16px, var(--sa-left));
+}
+
+.gallery-next {
+  right: max(16px, var(--sa-right));
+}
+
+.gallery-footer {
+  position: absolute;
+  bottom: calc(24px + var(--sa-bottom));
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 0 max(20px, var(--sa-right)) 0 max(20px, var(--sa-left));
+  pointer-events: none;
+}
+
+.gallery-title {
+  margin: 0;
+  text-align: center;
+  line-height: 1.4;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.gallery-title-part {
+  white-space: nowrap;
+}
+
+.gallery-count {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+@media (min-width: 768px) {
+  .gallery-nav {
+    display: flex;
+  }
+}
+
+/* ===================== FOOTER ===================== */
+
+/* Continues the content area to the bottom of the page (no white strip under the cards). */
+.site-footer {
+  padding: 20px max(24px, var(--sa-right)) calc(28px + var(--sa-bottom)) max(24px, var(--sa-left));
+  text-align: center;
+  background: var(--content-bg);
+  border-top: 1px solid var(--card-border);
+}
+
+.site-footer p {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+/* ===================== BREAKPOINTS ===================== */
+
+@media (min-width: 640px) {
+  .site-header {
+    padding: calc(36px + var(--sa-top)) max(48px, var(--sa-right)) 24px max(48px, var(--sa-left));
+  }
+
+  .tabs {
+    padding: 0 max(24px, var(--sa-right)) 0 max(24px, var(--sa-left));
+  }
+
+  .tab {
+    padding: 22px 8px 18px;
+  }
+
+  .tab-label {
+    font-size: 12px;
+  }
+
+  .site-footer {
+    padding: 24px max(48px, var(--sa-right)) calc(32px + var(--sa-bottom)) max(48px, var(--sa-left));
+  }
+
+  .floor-content {
+    padding: 40px max(48px, var(--sa-right)) 64px max(48px, var(--sa-left));
+  }
+
+  .space-button {
+    padding: 20px 4px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-header {
+    padding: calc(44px + var(--sa-top)) max(80px, var(--sa-right)) 28px max(80px, var(--sa-left));
+  }
+
+  .site-project {
+    font-size: 22px;
+  }
+
+  .tabs {
+    padding: 0 max(80px, var(--sa-right)) 0 max(80px, var(--sa-left));
+  }
+
+  .panel {
+    min-height: 65vh;
+  }
+
+  .site-footer {
+    padding: 28px max(80px, var(--sa-right)) calc(36px + var(--sa-bottom)) max(80px, var(--sa-left));
+  }
+
+  .floor-content {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px max(80px, var(--sa-right)) 72px max(80px, var(--sa-left));
+    gap: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  #loader,
+  #app,
+  .gallery-image.zoom-animate,
+  .pdf-pages.zoom-animate {
+    transition: none !important;
+  }
+}

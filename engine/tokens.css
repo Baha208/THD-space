@@ -1,0 +1,61 @@
+/* ===== THD Studio — design tokens =====
+   The single source of truth for brand colours and fonts. engine/styles.css imports it, as do
+   other THD apps served from the same root (see CLAUDE.md). engine/generate-manifest.js and
+   the tools/ icon scripts read --ink / --accent from this file; engine/app.js reads --ink at
+   runtime for <meta name="theme-color">.
+   Font URLs are relative to this file (engine/fonts/), so they work from any importer. */
+
+@font-face {
+  font-family: "BankGothic";
+  src: url("fonts/BankGothic-Medium.woff2") format("woff2"),
+       url("fonts/BankGothic-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "BankGothic";
+  src: url("fonts/BankGothic-Bold.woff2") format("woff2"),
+       url("fonts/BankGothic-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --ink: #231F20;
+  --ink-soft: #3E393B;
+  --gray: #616161;
+  --mist: #E9ECEB;
+  --accent: #FEFB28;
+  --white: #FFFFFF;
+  --error: #B3261E;
+
+  --on-ink-subtle: color-mix(in srgb, var(--white) 8%, transparent);
+  --scrim: color-mix(in srgb, var(--ink) 65%, transparent);
+
+  /* Zones, shared by the presentations and the hub: ink chrome (header + tab bars) around a
+     mist content area holding white cards. Built only from the colours above. */
+  --chrome-bg: var(--ink);
+  --chrome-text: var(--white);
+  --chrome-text-muted: color-mix(in srgb, var(--white) 55%, var(--ink)); /* labels, inactive tabs */
+  --chrome-divider: var(--on-ink-subtle);                                /* hairline inside chrome */
+  --content-bg: var(--mist);
+  --card-bg: var(--white);
+  --card-border: color-mix(in srgb, var(--ink) 12%, transparent);
+  --card-hover: color-mix(in srgb, var(--ink) 4%, var(--white));
+
+  --font-display: "BankGothic", "Arial Narrow", sans-serif;
+  --font-body: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
