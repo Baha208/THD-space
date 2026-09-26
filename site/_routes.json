@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "description": "Only these paths run Pages Functions (functions/); everything else (engine/, hub/) is a plain static file and never counts as a function request.",
+  "include": ["/projects/*", "/projects-index.json", "/admin", "/admin/*"],
+  "exclude": []
+}

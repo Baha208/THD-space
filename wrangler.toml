@@ -1,0 +1,18 @@
+# Cloudflare Pages project for THD Space. Static files come from dist/ (tools/build-dist.js copies
+# engine/, hub/, admin/ and site/ there; projects/ and tools/ are never deployed). Pages Functions
+# in functions/ serve project content from the R2 bucket and the admin API.
+#
+# Local:  npm run dev        (wrangler emulates R2 in .wrangler/state/, no account needed)
+# Deploy: npm run deploy     (after `wrangler login`, once)
+#
+# Production variables (Pages project > Settings > Variables):
+#   ACCESS_TEAM_DOMAIN  e.g. "thd.cloudflareaccess.com"  } set both to require a Cloudflare
+#   ACCESS_AUD          the Access application's AUD tag  } Access login on /admin/*.
+# Unset (as here, locally) the admin panel is open: development only.
+name = "thd-space"
+compatibility_date = "2026-09-01"
+pages_build_output_dir = "dist"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "thd-space"

@@ -1,0 +1,15 @@
+{
+  "name": "thd-space",
+  "private": true,
+  "description": "THD Space: client presentations engine, team hub and admin panel (Cloudflare Pages + R2)",
+  "scripts": {
+    "build": "node tools/build-dist.js",
+    "dev": "npm run build && wrangler pages dev --port 8788",
+    "test": "node --test server/*.test.js",
+    "import": "node tools/import-project.js",
+    "deploy": "npm run build && wrangler pages deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}

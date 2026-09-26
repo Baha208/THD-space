@@ -1,0 +1,6 @@
+{
+  "name": "thd-space-server",
+  "private": true,
+  "description": "Shared code for the Pages Functions in functions/ (ES modules; tests run with `npm test`)",
+  "type": "module"
+}

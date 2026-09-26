@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- THD Space admin panel: projects and templates, backed by the admin API in functions/admin/api/.
+     Internal: in production Cloudflare Access sits in front of /admin/ (see CLAUDE.md "Deploying").
+     Static shell; every view is built by admin.js. Not a PWA on purpose (it must never be stale). -->
+<title>Admin — THD Space</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../hub/icons/icon-32.png" sizes="32x32" type="image/png">
+<link rel="preload" href="../engine/fonts/BankGothic-Medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../engine/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script src="admin.js" defer></script>
+</head>
+<body>
+<header class="adm-header">
+  <p class="adm-kicker">THD Space</p>
+  <h1 class="adm-title" id="adm-title">Admin</h1>
+  <p class="adm-subtitle" id="adm-subtitle"></p>
+</header>
+<nav class="adm-tabs" role="tablist" aria-label="Admin sections">
+  <a class="adm-tab" role="tab" href="#/projects" data-view="projects" aria-selected="true">
+    <span class="adm-tab-index">01</span><span class="adm-tab-label">Projects</span>
+  </a>
+  <a class="adm-tab" role="tab" href="#/templates" data-view="templates" aria-selected="false">
+    <span class="adm-tab-index">02</span><span class="adm-tab-label">Templates</span>
+  </a>
+</nav>
+<main class="adm-main" id="adm-main">
+  <p class="adm-status">Loading</p>
+</main>
+<footer class="adm-footer"><p id="adm-user"></p></footer>
+<div class="adm-toast" id="adm-toast" role="status" aria-live="polite" hidden></div>
+
+<dialog class="adm-dialog" id="dlg-new">
+  <form method="dialog" class="adm-dialog-form" id="frm-new">
+    <p class="adm-dialog-kicker">New project</p>
+    <label class="field"><span class="label">Client</span><input class="input" name="client" required autocomplete="off" placeholder="e.g. Inas El Baily"></label>
+    <label class="field"><span class="label">Title</span><input class="input" name="title" required autocomplete="off" placeholder="e.g. Inas El Baily’s Villa"></label>
+    <label class="field"><span class="label">Address (slug)</span><input class="input input-mono" name="slug" autocomplete="off" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="made from the title"><span class="hint" id="new-slug-hint"></span></label>
+    <fieldset class="field"><legend class="label">Start from</legend><div class="choice-list" id="new-templates"></div></fieldset>
+    <p class="form-error" id="new-error" hidden></p>
+    <div class="dialog-actions">
+      <button type="button" class="btn" value="cancel" id="new-cancel">Cancel</button>
+      <button type="submit" class="btn btn-primary" id="new-submit">Create draft</button>
+    </div>
+  </form>
+</dialog>
+<noscript>The admin panel needs JavaScript enabled.</noscript>
+</body>
+</html>
