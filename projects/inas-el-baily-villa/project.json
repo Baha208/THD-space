@@ -363,6 +363,11 @@
   ],
   "documents": {
     "dir": "Working documents",
-    "files": []
+    "files": [
+      {
+        "file": "3d views & working documents/Working documents/Testing document.pdf",
+        "label": "Testing Document"
+      }
+    ]
   }
 }
