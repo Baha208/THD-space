@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<!-- Project content (title, floors, rooms, images) comes from project.json via engine/app.js. -->
+<title>THD Studio</title>
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<!-- Installed on iOS, the ink header runs up under the status bar; engine/styles.css pads for the
+     safe areas (see "Safe areas" there). -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="{{ENGINE}}/images/icons/icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="{{ENGINE}}/images/icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="{{ENGINE}}/images/icons/icon-180.png">
+<link rel="preload" href="{{ENGINE}}/fonts/BankGothic-Medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ENGINE}}/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="project.json" as="fetch" crossorigin>
+<link rel="stylesheet" href="{{ENGINE}}/styles.css">
+<script src="{{ENGINE}}/history.js" defer></script>
+<script src="{{ENGINE}}/zoom.js" defer></script>
+<script src="{{ENGINE}}/gallery.js" defer></script>
+<script src="{{ENGINE}}/pdf-view.js" defer></script>
+<script src="{{ENGINE}}/app.js" defer></script>
+</head>
+<body>
+<noscript>This presentation needs JavaScript enabled.</noscript>
+</body>
+</html>

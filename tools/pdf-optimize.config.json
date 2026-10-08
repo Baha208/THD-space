@@ -1,0 +1,40 @@
+{
+  "_about": "Settings for tools/optimize-pdfs.js. Reasoning for each value: CLAUDE.md, 'PDF optimizer'. Bump settingsVersion whenever a value that changes the output changes, so files are re-derived from _originals/.",
+  "settingsVersion": 2,
+
+  "_viewerMaxCanvasPixels": "Mirror of MAX_CANVAS_PIXELS in engine/pdf-view.js: one canvas per page, so on an A0 sheet the viewer never shows more than ~74 dpi, at any zoom.",
+  "viewerMaxCanvasPixels": 8388608,
+
+  "_headroom": "Target image resolution = headroom x the most the viewer can show for that page size (A0 ~74 dpi, A1 ~104, A3 ~210 at 1.0). 1.0 chosen after a side-by-side preview (October 2026). If MAX_CANVAS_PIXELS in pdf-view.js is raised, raise this too and rerun with --force (re-derives from _originals/).",
+  "headroom": 1.0,
+
+  "_resampleAbove": "Only images more than this factor over the target are resampled (avoids re-encoding for a few percent).",
+  "resampleAbove": 1.25,
+
+  "_minResample": "Images smaller than this are never resampled: they carry almost no bytes, and CAD exports often build one picture (e.g. a title-block logo) from many thin image strips, which visibly seam when each strip is resampled on its own.",
+  "minResamplePixels": 1000000,
+  "minResampleSide": 256,
+
+  "_maxMaskTransparentPercent": "An image whose soft mask is fully transparent over more than this share is a shaped overlay (AutoCAD exports translucent fills and outlines that way: line art in a picture), not a render; it is never resampled. Renders in these files have no fully transparent pixels at all.",
+  "maxMaskTransparentPercent": 1,
+
+  "jpegQuality": 80,
+
+  "_minImagePsnrDb": "Each resampled image vs a high-quality downscale of its original.",
+  "minImagePsnrDb": 36,
+
+  "_render": "Page render check through Ghostscript (only when one is found): whole page at the viewer's 1x, and the worst of 16 tiles at the viewer's maximum zoom.",
+  "minRender1xPsnrDb": 38,
+  "minRenderZoomTilePsnrDb": 30,
+  "render1xLongEdgePx": 1200,
+
+  "_minSavingPercent": "A file is only replaced when it gets at least this much smaller.",
+  "minSavingPercent": 5,
+
+  "_sizes": "generate-manifest.js: warn for PDFs over warnUnoptimizedMB that aren't in the ledger; soft note for optimized PDFs still over noteOptimizedMB.",
+  "warnUnoptimizedMB": 15,
+  "noteOptimizedMB": 25,
+
+  "_sample": "Pages checked by rendering: first, last, the N with the most resampled image area, and M seeded-random ones.",
+  "sample": { "heaviest": 3, "random": 2, "seed": 1 }
+}

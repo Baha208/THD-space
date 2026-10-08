@@ -1,0 +1,70 @@
+/* ===== THD Studio — design tokens =====
+   The single source of truth for brand colours and fonts. engine/styles.css imports it, as do
+   other THD apps served from the same root (see CLAUDE.md). engine/generate-manifest.js and
+   the tools/ icon scripts read --ink / --accent from this file; engine/app.js reads --ink at
+   runtime for <meta name="theme-color">.
+   Font URLs are relative to this file (engine/fonts/), so they work from any importer. */
+
+@font-face {
+  font-family: "BankGothic";
+  src: url("fonts/BankGothic-Medium.woff2") format("woff2"),
+       url("fonts/BankGothic-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "BankGothic";
+  src: url("fonts/BankGothic-Bold.woff2") format("woff2"),
+       url("fonts/BankGothic-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --ink: #231F20;
+  --ink-soft: #3E393B;
+  --gray: #616161;
+  --mist: #E9ECEB;
+  --accent: #FEFB28;
+  --white: #FFFFFF;
+  --error: #B3261E;
+
+  --on-ink-subtle: color-mix(in srgb, var(--white) 8%, transparent);
+  --scrim: color-mix(in srgb, var(--ink) 65%, transparent);
+
+  /* Zones, shared by the presentations and the hub: ink chrome (header + tab bars) around a
+     mist content area that reads as a drawing sheet: no boxes on it, only ruled rows, and the
+     floor plan printed straight onto it. Built only from the colours above. Contrast (WCAG):
+     chrome-text-muted on ink 5.8:1, content-text-muted on mist 5.2:1 and on row-press 4.6:1,
+     marker-text on marker-bg 14.8:1. Yellow never sits on mist (1.1:1). */
+  --chrome-bg: var(--ink);
+  --chrome-text: var(--white);
+  --chrome-text-muted: color-mix(in srgb, var(--white) 55%, var(--ink)); /* labels, inactive tabs */
+  --chrome-divider: var(--on-ink-subtle);                                /* hairline inside chrome */
+  --content-bg: var(--mist);
+  --content-text: var(--ink);
+  --content-text-muted: var(--gray);                                     /* meta, counts, dates */
+  --rule: color-mix(in srgb, var(--ink) 18%, transparent);               /* hairline between rows */
+  --rule-strong: var(--ink);                                             /* sheet / schedule head rule */
+  --row-press: color-mix(in srgb, var(--ink) 7%, var(--mist));           /* row pressed / hovered */
+  --marker-bg: var(--ink);                                               /* index cell, pressed or current */
+  --marker-text: var(--accent);
+
+  --font-display: "BankGothic", "Arial Narrow", sans-serif;
+  --font-body: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-fast: 120ms; /* press / colour feedback */
+  --motion: 180ms;      /* tab bar slide, panel fade: all UI motion stays under 200 ms */
+}

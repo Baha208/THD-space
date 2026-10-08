@@ -1,0 +1,973 @@
+/* ===== THD Studio — presentation engine =====
+   Shared by every project. Nothing project-specific belongs here.
+   Colours and fonts come from tokens.css (the single source of truth; see CLAUDE.md for
+   everything that imports it). This file only uses them. */
+@import url("tokens.css");
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===================== SAFE AREAS =====================
+   Installed on iOS the status bar is black-translucent (index.html) and the viewport covers the
+   whole screen (viewport-fit=cover), so the page runs under the status bar, the home indicator
+   and, in landscape, the side notch. Everything that could end up there is padded by these
+   insets; each is 0 where there is no notch, so nothing moves on other screens. */
+:root {
+  --sa-top: env(safe-area-inset-top, 0px);
+  --sa-right: env(safe-area-inset-right, 0px);
+  --sa-bottom: env(safe-area-inset-bottom, 0px);
+  --sa-left: env(safe-area-inset-left, 0px);
+}
+
+/* Ink behind the status bar, so page content scrolling up under the clock stays hidden (the
+   sticky tab bars stop just below it). Under the loader and the overlays, above the page. */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 25;
+  height: var(--sa-top);
+  background: var(--chrome-bg);
+  pointer-events: none;
+}
+
+/* ===================== LOADER ===================== */
+
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  transition: opacity var(--motion) var(--ease), visibility var(--motion) var(--ease);
+}
+
+#loader.loader-exit {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 0 8vw;
+}
+
+.loader-kicker {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.loader-title {
+  margin: 0 0 32px;
+  min-height: 1.2em;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(16px, 5vw, 24px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.loader-bar-track {
+  width: min(56vw, 220px);
+  height: 2px;
+  background: var(--mist);
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: var(--ink);
+  transition: width var(--motion-fast) var(--ease);
+}
+
+.loader-percent {
+  margin: 10px 0 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--gray);
+  min-width: 3em;
+  text-align: center;
+}
+
+.loader-failed .loader-bar-fill {
+  background: var(--error);
+}
+
+.loader-failed .loader-percent {
+  color: var(--error);
+}
+
+.loader-error {
+  margin-top: 20px;
+  width: min(84vw, 560px);
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.loader-error-title {
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.loader-error-list {
+  margin: 0;
+  padding: 12px 12px 12px 28px;
+  max-height: 40vh;
+  overflow-y: auto;
+  border: 1px solid var(--mist);
+  overflow-wrap: anywhere;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===================== APP SHELL ===================== */
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity var(--motion) var(--ease);
+}
+
+#app.app-visible {
+  opacity: 1;
+}
+
+/* Zones (tokens.css): ink chrome = header + tab bars; the mist content area is a drawing sheet
+   (the plan printed on it, ruled schedules, no boxes).
+   Text only: the THD mark is seen on the home-screen icon, not repeated inside the app. */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(32px + var(--sa-top)) max(24px, var(--sa-right)) 24px max(24px, var(--sa-left));
+  background: var(--chrome-bg);
+  border-bottom: 1px solid var(--chrome-divider);
+}
+
+.site-project {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--chrome-text);
+  text-align: center;
+}
+
+/* Keyboard focus, everywhere: a 2px outline in the zone's own text colour, drawn inside the
+   control so the sticky bars and ruled rows never clip it. */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--content-text);
+  outline-offset: -2px;
+}
+
+.chrome-bars :focus-visible,
+.gallery :focus-visible,
+.doc-viewer :focus-visible {
+  outline-color: var(--chrome-text);
+}
+
+/* ===================== TABS ===================== */
+
+/* One sticky chrome block holds both rows: the top-level tabs (3D Views / Working Documents /
+   Reports) and, on 3D Views only, the floor tabs. It sticks just below the status bar (the
+   body::before backdrop covers the bar itself), so there is no empty band above the labels while
+   it sits under the header, and the floor row needs no offset of its own: hidden, it takes no
+   room; shown, the block is simply taller. */
+.chrome-bars {
+  position: sticky;
+  top: var(--sa-top);
+  z-index: 20;
+  background: var(--chrome-bg);
+}
+
+.tabs {
+  display: flex;
+  width: 100%;
+  padding: 0 var(--sa-right) 0 var(--sa-left);
+  background: var(--chrome-bg);
+}
+
+/* Each tab starts at its label's width and shares the spare room ("Working Documents" doesn't fit
+   a third of a 320 px screen); with the tighter phone letter-spacing on .tab-label below, all
+   three stay on one line down to 320 px. */
+.tab {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 16px 4px;
+  position: relative;
+  color: var(--chrome-text-muted);
+  transition: color var(--motion-fast) var(--ease);
+}
+
+.tab::after,
+.floor-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform var(--motion) var(--ease);
+}
+
+.tab:active,
+.floor-tab:active,
+.tab[aria-selected="true"],
+.floor-tab[aria-selected="true"] {
+  color: var(--chrome-text);
+}
+
+.tab[aria-selected="true"]::after,
+.floor-tab[aria-selected="true"]::after {
+  transform: scaleX(1);
+}
+
+/* The index takes the tab's own colour (no extra fading: faded, it fell to 2.9:1 on ink). */
+.tab-index {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: inherit;
+}
+
+.tab-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.tab .tab-label {
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* Floor tabs, inside 3D Views: a single compact line under a hairline, same muted / active
+   treatment and accent bar as the top row. Many floors scroll sideways instead of squeezing. */
+.floor-tabs {
+  display: flex;
+  width: 100%;
+  padding: 0 var(--sa-right) 0 var(--sa-left);
+  border-top: 1px solid var(--chrome-divider);
+  background: var(--chrome-bg);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.floor-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.floor-tab {
+  flex: 1 0 auto;
+  min-height: 44px;
+  padding: 12px 16px;
+  position: relative;
+  color: var(--chrome-text-muted);
+  white-space: nowrap;
+  transition: color var(--motion-fast) var(--ease);
+}
+
+/* ===================== PANELS ===================== */
+
+.panels {
+  flex: 1;
+  position: relative;
+  background: var(--content-bg);
+}
+
+.panel {
+  min-height: 60vh;
+  animation: fadeUp var(--motion) var(--ease) forwards;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+/* The 3D Views tab's own panel doesn't fade: the floor panel inside it does, once. */
+.section-3d {
+  min-height: 60vh;
+}
+
+/* ===================== SHEET: FLOOR PLAN + SCHEDULES ===================== */
+
+.floor-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 24px max(24px, var(--sa-right)) 56px max(24px, var(--sa-left));
+}
+
+/* A sheet / schedule head: name on the left, sheet number or count on the right, on a solid ink
+   rule, like the strip of a drawing title block. */
+.sheet-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0;
+  padding: 0 0 8px;
+  border-bottom: 1px solid var(--rule-strong);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--content-text);
+}
+
+.sheet-head-meta {
+  flex: none;
+  color: var(--content-text-muted);
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The plan is printed on the sheet: multiply turns its white paper into the mist underneath and
+   keeps every line and colour. The sheet's own background is mist, so the blend has the right
+   backdrop even inside the fading panel (which is its own compositing group). */
+.floorplan {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  background: var(--content-bg);
+}
+
+.floorplan-image {
+  width: 100%;
+  height: auto;
+  mix-blend-mode: multiply;
+}
+
+.floorplan-error {
+  margin: 0;
+  padding: 24px 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--error);
+  overflow-wrap: anywhere;
+}
+
+/* ===================== SCHEDULE ROWS (rooms, PDFs) =====================
+   An indexed schedule instead of cards: index cell, name, meta, arrow, hairline rules between
+   rows. Pressed (and the room last opened) the index cell turns ink with a yellow number: the
+   only place yellow appears on the sheet. The whole row is the target (56 px tall). */
+.space-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.schedule {
+  display: flex;
+  flex-direction: column;
+}
+
+.space-button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 56px;
+  padding: 12px 8px 12px 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--content-text);
+  text-align: left;
+  text-decoration: none;
+  transition: background-color var(--motion-fast) var(--ease);
+}
+
+.space-button:active {
+  background: var(--row-press);
+}
+
+@media (hover: hover) {
+  .space-button:hover {
+    background: var(--row-press);
+  }
+}
+
+.row-index {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--rule);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--content-text);
+  transition: background-color var(--motion-fast) var(--ease), color var(--motion-fast) var(--ease), border-color var(--motion-fast) var(--ease);
+}
+
+.space-button:active .row-index,
+.space-button.is-current .row-index {
+  background: var(--marker-bg);
+  border-color: var(--marker-bg);
+  color: var(--marker-text);
+}
+
+/* Name over meta (view count), like the hub's title over client, so a long name keeps the
+   full width at 320 px. */
+.row-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row-name {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.row-meta {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--content-text-muted);
+}
+
+.row-arrow {
+  flex: none;
+  display: block;
+  color: var(--content-text);
+  transition: transform var(--motion-fast) var(--ease);
+}
+
+.space-button:active .row-arrow {
+  transform: translateX(2px);
+}
+
+/* ===================== PDF LISTS (Working Documents, Reports) ===================== */
+
+/* A dated label ("2026-08-23 Cabinets details") sets its date in figures on the first line,
+   quieter than the name, so every row breaks the same way; the text itself is the label,
+   unchanged (screen readers read it as one line). */
+.doc-date {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--content-text-muted);
+}
+
+.doc-link[aria-busy="true"] .row-name {
+  color: var(--content-text-muted);
+}
+
+.doc-kind {
+  flex: none;
+  padding: 2px 4px;
+  border: 1px solid currentColor;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--content-text-muted);
+}
+
+.doc-error {
+  margin: 0;
+  padding: 8px 0 16px 48px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--error);
+  overflow-wrap: anywhere;
+}
+
+/* In-app PDF viewer: same dark overlay, close button and caption as the gallery. */
+.doc-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  background: var(--ink);
+}
+
+.doc-viewer-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  padding: calc(68px + var(--sa-top)) var(--sa-right) calc(56px + var(--sa-bottom)) var(--sa-left);
+}
+
+/* Scroll container for the page stack (pdf-view.js). At 1x it scrolls natively; zoomed
+   in, zoom.js pans the stack itself, so native scrolling and gestures are switched off. */
+.doc-viewer-pages {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+.doc-viewer-pages.is-zoomed {
+  overflow: hidden;
+  touch-action: none;
+}
+
+.pdf-pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  transform-origin: center center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.pdf-pages.is-zoomed {
+  cursor: grab;
+}
+
+.doc-viewer-pages.is-panning .pdf-pages {
+  cursor: grabbing;
+}
+
+.pdf-pages.zoom-animate {
+  transition: transform 0.25s var(--ease);
+}
+
+/* Correctly sized before it is drawn, so the scroll length never jumps. */
+.pdf-page {
+  position: relative;
+  flex: none;
+  background: var(--mist);
+}
+
+.pdf-page.is-rendered {
+  background: var(--white);
+}
+
+.pdf-page canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pdf-page.is-failed::after {
+  content: attr(data-error);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--error);
+}
+
+/* An empty schedule: the head rule, then one ruled line saying so. */
+.doc-empty {
+  margin: 0;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--content-text-muted);
+}
+
+/* ===================== GALLERY ===================== */
+
+.gallery {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  overflow: hidden;
+  background: var(--ink);
+  touch-action: pan-y;
+}
+
+.gallery.is-open {
+  display: flex;
+}
+
+.gallery-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(72px + var(--sa-top)) max(20px, var(--sa-right)) calc(108px + var(--sa-bottom)) max(20px, var(--sa-left));
+  box-sizing: border-box;
+}
+
+.gallery-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  transform-origin: center center;
+  cursor: zoom-in;
+}
+
+/* Zoomed in: gallery.js owns every touch gesture on the image, so the browser's
+   own panning/zooming must not compete. */
+.gallery-image.is-zoomed,
+.gallery-stage.is-zoomed {
+  touch-action: none;
+}
+
+.gallery-image.is-zoomed {
+  cursor: grab;
+  will-change: transform;
+}
+
+.gallery-stage.is-panning .gallery-image {
+  cursor: grabbing;
+}
+
+.gallery-image.zoom-animate {
+  transition: transform 0.25s var(--ease);
+}
+
+/* A zoomed render fills the screen, often with light walls; keep the controls and
+   caption readable over it. */
+.gallery.is-zoomed .gallery-close,
+.gallery.is-zoomed .gallery-nav {
+  background: var(--scrim);
+  border-radius: 50%;
+}
+
+.gallery.is-zoomed .gallery-nav:hover {
+  background: var(--accent);
+}
+
+.gallery.is-zoomed .gallery-title,
+.gallery.is-zoomed .gallery-count {
+  background: var(--scrim);
+  padding: 2px 8px;
+}
+
+.gallery-status {
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  right: 24px;
+  transform: translateY(-50%);
+  margin: 0;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mist);
+  pointer-events: none;
+}
+
+.gallery-status.is-error {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+
+.gallery-close {
+  position: absolute;
+  top: calc(16px + var(--sa-top));
+  right: max(16px, var(--sa-right));
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 28px;
+  line-height: 1;
+  z-index: 2;
+}
+
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  background: var(--on-ink-subtle);
+  color: var(--white);
+  align-items: center;
+  justify-content: center;
+  display: none;
+  z-index: 2;
+  transition: background var(--motion-fast) var(--ease), color var(--motion-fast) var(--ease);
+}
+
+.gallery-nav svg {
+  display: block;
+}
+
+.gallery-nav:hover {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+.gallery-prev {
+  left: max(16px, var(--sa-left));
+}
+
+.gallery-next {
+  right: max(16px, var(--sa-right));
+}
+
+.gallery-footer {
+  position: absolute;
+  bottom: calc(24px + var(--sa-bottom));
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 0 max(20px, var(--sa-right)) 0 max(20px, var(--sa-left));
+  pointer-events: none;
+}
+
+.gallery-title {
+  margin: 0;
+  text-align: center;
+  line-height: 1.4;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.gallery-title-part {
+  white-space: nowrap;
+}
+
+.gallery-count {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+@media (min-width: 768px) {
+  .gallery-nav {
+    display: flex;
+  }
+}
+
+/* ===================== FOOTER ===================== */
+
+/* Continues the content area to the bottom of the page (no white strip under the cards). */
+.site-footer {
+  padding: 24px max(24px, var(--sa-right)) calc(32px + var(--sa-bottom)) max(24px, var(--sa-left));
+  text-align: center;
+  background: var(--content-bg);
+  border-top: 1px solid var(--rule);
+}
+
+.site-footer p {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+/* ===================== BREAKPOINTS ===================== */
+
+@media (min-width: 640px) {
+  .site-header {
+    padding: calc(40px + var(--sa-top)) max(48px, var(--sa-right)) 24px max(48px, var(--sa-left));
+  }
+
+  .tabs,
+  .floor-tabs {
+    padding: 0 max(24px, var(--sa-right)) 0 max(24px, var(--sa-left));
+  }
+
+  .tab {
+    padding: 24px 8px 16px;
+  }
+
+  .tab-label {
+    font-size: 12px;
+  }
+
+  .tab .tab-label {
+    letter-spacing: 0.14em;
+  }
+
+  .site-footer {
+    padding: 24px max(48px, var(--sa-right)) calc(32px + var(--sa-bottom)) max(48px, var(--sa-left));
+  }
+
+  .floor-content {
+    padding: 32px max(48px, var(--sa-right)) 64px max(48px, var(--sa-left));
+  }
+
+  .space-button {
+    min-height: 64px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-header {
+    padding: calc(44px + var(--sa-top)) max(80px, var(--sa-right)) 28px max(80px, var(--sa-left));
+  }
+
+  .site-project {
+    font-size: 22px;
+  }
+
+  .tabs,
+  .floor-tabs {
+    padding: 0 max(80px, var(--sa-right)) 0 max(80px, var(--sa-left));
+  }
+
+  .panel,
+  .section-3d {
+    min-height: 65vh;
+  }
+
+  .site-footer {
+    padding: 28px max(80px, var(--sa-right)) calc(36px + var(--sa-bottom)) max(80px, var(--sa-left));
+  }
+
+  .floor-content {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px max(80px, var(--sa-right)) 72px max(80px, var(--sa-left));
+    gap: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab::after,
+  .floor-tab::after,
+  .tab,
+  .floor-tab,
+  .space-button,
+  .row-index,
+  .row-arrow,
+  .gallery-nav {
+    transition: none !important;
+  }
+
+  .space-button:active .row-arrow {
+    transform: none;
+  }
+
+  .panel {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  #loader,
+  #app,
+  .gallery-image.zoom-animate,
+  .pdf-pages.zoom-animate {
+    transition: none !important;
+  }
+}

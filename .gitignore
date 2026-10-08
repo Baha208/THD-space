@@ -1,0 +1,24 @@
+# Source brand files (.ai, logos, palette, typefaces): not used by the app, kept out of the repo.
+THD studio brand identity/
+
+# Internal handoff notes for future sessions: never published (the repo is public and served by Pages).
+HANDOFF.md
+
+# Node packages for tools/ (reinstall with: npm install --prefix tools)
+node_modules/
+
+# Original PDFs kept by tools/optimize-pdfs.js (projects/<slug>/_originals/): never published.
+# They exist only on the computer that ran the optimizer; keep the source PDFs elsewhere too.
+_originals/
+
+# OS junk
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+.DS_Store
+._*
+.Spotlight-V100/
+.Trashes/

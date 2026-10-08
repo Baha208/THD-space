@@ -1,0 +1,3 @@
+# Line endings: git detects text files and stores them with LF (moved here from
+# projects/inas-el-baily-villa/, where it only covered that folder).
+* text=auto

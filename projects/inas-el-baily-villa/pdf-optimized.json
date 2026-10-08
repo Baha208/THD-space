@@ -1,0 +1,49 @@
+{
+  "_about": "Written by tools/optimize-pdfs.js: which PDFs are optimized, from which original, with which settings. Tracked in git; the originals themselves are in _originals/ (not tracked).",
+  "files": {
+    "Reports/2026-09-30-Tiles schedule.pdf": {
+      "originalSha256": "fca4694185bc9adb6866cc00dcdca160c171cc8794ce8d311f81724770d513ff",
+      "originalBytes": 648091,
+      "settingsVersion": 2,
+      "headroom": 1,
+      "date": "2026-10-08",
+      "result": "kept-original",
+      "reason": "gate failed: smaller",
+      "outputSha256": "fca4694185bc9adb6866cc00dcdca160c171cc8794ce8d311f81724770d513ff",
+      "outputBytes": 648091
+    },
+    "Working-documents/2026-05-25-Working plans.pdf": {
+      "originalSha256": "447c7df76db578eb0fb914ca4b7ceeb8eb4535b55a6b846cb688bf7837763129",
+      "originalBytes": 4843865,
+      "settingsVersion": 2,
+      "headroom": 1,
+      "date": "2026-10-08",
+      "result": "optimized",
+      "outputSha256": "81940af744a96fb31cc052e158b4e7aa599a4950ad00af666fb912ab610ad581",
+      "outputBytes": 4254536,
+      "imagesResampled": 0
+    },
+    "Working-documents/2026-06-28-Internal elevations.pdf": {
+      "originalSha256": "2e4137bfb744762633e974ec98d0557a88eb8939d7fcc1a52bbba9203b87e796",
+      "originalBytes": 35978800,
+      "settingsVersion": 2,
+      "headroom": 1,
+      "date": "2026-10-08",
+      "result": "optimized",
+      "outputSha256": "f804c863e924bdf12f8d72d4577e62d33d18cbc2ad060ce3a8bea9109c20dc73",
+      "outputBytes": 16567293,
+      "imagesResampled": 40
+    },
+    "Working-documents/2026-08-23-Cabinets details.pdf": {
+      "originalSha256": "f5d0a22b5eae780cf8359959e57ab9352ee938b4231871ebd962bbec8631f407",
+      "originalBytes": 5856384,
+      "settingsVersion": 2,
+      "headroom": 1,
+      "date": "2026-10-08",
+      "result": "optimized",
+      "outputSha256": "e5b3888e9e096021389fceb532ef74562268ab832cae3567fcbb60fbf42626b9",
+      "outputBytes": 3205747,
+      "imagesResampled": 5
+    }
+  }
+}
